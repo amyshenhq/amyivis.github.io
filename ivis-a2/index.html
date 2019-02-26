@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
+}
+
+#canvas {
+}
+
+#canvas-svg {
+}
+
+
+.land {
+  fill: #222;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+#tooltip-container {
+  position: absolute;
+  background-color: #fff;
+  color: #000;
+  padding: 10px;
+  border: 1px solid;
+  display: none;
+}
+
+.tooltip_key0 {
+    font-weight: bold;
+}
+
+.tooltip_key {
+  font-weight: bold;
+}
+
+.tooltip_value {
+  margin-left: 20px;
+  float: right;
+}
+
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script>
+var val="WVS1.csv";
+var sHref = window.location.href;
+var args = sHref.split("?");
+if(args[1]!=null){
+    val=args[1]+".csv";
+}
+//function loadData(val){
+d3.csv(val, function(err, data) {
+
+  var config = {"data0":"Country","data1":"Family","data2":"Friends","data3":"Leisure time","data4":"Politics","data5":"Work","data6":"Religion","data7":"Happiness","data8":"Health",
+              "label0":"label 0","label1":"label 1","color0":"#99ccff","color1":"#0050A1",
+              "width":960,"height":960}
+  
+  var width = config.width,
+      height = config.height;
+  
+  var COLOR_COUNTS = 9;
+  
+  function Interpolate(start, end, steps, count) {
+      var s = start,
+          e = end,
+          final = s + (((e - s) / steps) * count);
+      return Math.floor(final);
+  }
+  
+  function Color(_r, _g, _b) {
+      var r, g, b;
+      var setColors = function(_r, _g, _b) {
+          r = _r;
+          g = _g;
+          b = _b;
+      };
+  
+      setColors(_r, _g, _b);
+      this.getColors = function() {
+          var colors = {
+              r: r,
+              g: g,
+              b: b
+          };
+          return colors;
+      };
+  }
+  
+  function hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+      } : null;
+  }
+  
+  function valueFormat(d) {
+    if (d > 1000000000) {
+      return Math.round(d / 1000000000 * 10) / 10 + "B";
+    } else if (d > 1000000) {
+      return Math.round(d / 1000000 * 10) / 10 + "M";
+    } else if (d > 1000) {
+      return Math.round(d / 1000 * 10) / 10 + "K";
+    } else {
+      return d;
+    }
+  }
+  
+  var COLOR_FIRST = config.color0, COLOR_LAST = config.color1;
+  
+  var rgb = hexToRgb(COLOR_FIRST);
+  
+  var COLOR_START = new Color(rgb.r, rgb.g, rgb.b);
+  
+  rgb = hexToRgb(COLOR_LAST);
+  var COLOR_END = new Color(rgb.r, rgb.g, rgb.b);
+  
+  var startColors = COLOR_START.getColors(),
+      endColors = COLOR_END.getColors();
+  
+  var colors = [];
+  
+  for (var i = 0; i < COLOR_COUNTS; i++) {
+    var r = Interpolate(startColors.r, endColors.r, COLOR_COUNTS, i);
+    var g = Interpolate(startColors.g, endColors.g, COLOR_COUNTS, i);
+    var b = Interpolate(startColors.b, endColors.b, COLOR_COUNTS, i);
+    colors.push(new Color(r, g, b));
+  }
+  
+  
+  var MAP_KEY = config.data0;
+  var MAP_VALUE = config.data8;
+  var MAP_VALUE1 = config.data1;
+  var MAP_VALUE2 = config.data2;
+  var MAP_VALUE3 = config.data3;
+  var MAP_VALUE4 = config.data4;
+  var MAP_VALUE5 = config.data5;
+  var MAP_VALUE6 = config.data6;
+  var MAP_VALUE7 = config.data7;
+  
+  var projection = d3.geo.mercator()
+      .scale((width + 1) / 2 / Math.PI)
+      .translate([width / 2, height / 2])
+      .precision(.1);
+  
+  var path = d3.geo.path()
+      .projection(projection);
+  
+  var graticule = d3.geo.graticule();
+  
+  var svg = d3.select("#canvas-svg").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+  
+  svg.append("path")
+      .datum(graticule)
+      .attr("class", "graticule")
+      .attr("d", path);
+  
+  var valueHash = {};
+  var valueHash1 = {};
+  var valueHash2 = {};
+  var valueHash3 = {};
+  var valueHash4 = {};
+  var valueHash5 = {};
+  var valueHash6 = {};
+  var valueHash7 = {};
+       
+  function log10(val) {
+    return Math.log(val);
+  }
+  
+  data.forEach(function(d) {
+    valueHash[d[MAP_KEY]] = +(d[MAP_VALUE]);
+    valueHash1[d[MAP_KEY]] = +(d[MAP_VALUE1]);
+    valueHash2[d[MAP_KEY]] = +(d[MAP_VALUE2]);
+    valueHash3[d[MAP_KEY]] = +(d[MAP_VALUE3]);
+    valueHash4[d[MAP_KEY]] = +(d[MAP_VALUE4]);
+    valueHash5[d[MAP_KEY]] = +(d[MAP_VALUE5]);
+    valueHash6[d[MAP_KEY]] = +(d[MAP_VALUE6]);
+    valueHash7[d[MAP_KEY]] = +(d[MAP_VALUE7]);
+  });
+  
+  var quantize = d3.scale.quantize()
+      .domain([0, 1.0])
+      .range(d3.range(COLOR_COUNTS).map(function(i) { return i }));
+  
+  quantize.domain([d3.min(data, function(d){
+      return (+d[MAP_VALUE]) }),
+    d3.max(data, function(d){
+      return (+d[MAP_VALUE]) })]);
+  
+  d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/world-topo-min.json", function(error, world) {
+    var countries = topojson.feature(world, world.objects.countries).features;
+          if(val=="WVS1.csv"){
+              svg.append("text").attr("x",400).attr("y",20)
+              .attr("class","header").text("Important in Life-Health (1990-1994)");
+          }
+          else if(val=="WVS2.csv"){
+              svg.append("text").attr("x",400).attr("y",20)
+              .attr("class","header").text("Important in Life-Health (1995-1999)");
+          }
+          else if(val=="WVS3.csv"){
+              svg.append("text").attr("x",400).attr("y",20)
+              .attr("class","header").text("Important in Life-Health (2000-2004)");
+          }
+          else if(val=="WVS4.csv"){
+          svg.append("text").attr("x",400).attr("y",20)
+          .attr("class","header").text("Important in Life-Health (2005-2009)");
+          }
+          else if(val=="WVS5.csv"){
+          svg.append("text").attr("x",400).attr("y",20)
+          .attr("class","header").text("Important in Life-Health (2010-2014)");
+          }
+    svg.append("path")
+       .datum(graticule)
+       .attr("class", "choropleth")
+       .attr("d", path);
+  
+    var g = svg.append("g");
+  
+    g.append("path")
+     .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
+     .attr("class", "equator")
+     .attr("d", path);
+  
+    var country = g.selectAll(".country").data(countries);
+  
+    country.enter().insert("path")
+        .attr("class", "country")
+        .attr("d", path)
+        .attr("id", function(d,i) { return d.id; })
+        .attr("title", function(d) { return d.properties.name; })
+        .style("fill", function(d) {
+          if (valueHash[d.properties.name]) {
+            var c = quantize((valueHash[d.properties.name]));
+            var color = colors[c].getColors();
+            return "rgb(" + color.r + "," + color.g +
+                "," + color.b + ")";
+          } else {
+            return "#ccc";
+          }
+        })
+        .on("mousemove", function(d) {
+            var html = "";
+  
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += d.properties.name
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += "Score";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Health";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Family";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash1[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Friends";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash2[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Leisure time";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash3[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Politics";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash4[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Work";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash5[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Religion";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash6[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            html += "<div class=\"tooltip_kv\">";
+            html += "<span class=\"tooltip_key\">";
+            html += "Happiness";
+            html += "</span>";
+            html += "<span class=\"tooltip_value\">";
+            html += (valueHash[d.properties.name] ? valueFormat(valueHash7[d.properties.name]) : "");
+            html += "";
+            html += "</span>";
+            html += "</div>";
+            
+            $("#tooltip-container").html(html);
+            $(this).attr("fill-opacity", "0.8");
+            $("#tooltip-container").show();
+            
+            var coordinates = d3.mouse(this);
+            
+            var map_width = $('.choropleth')[0].getBoundingClientRect().width;
+            
+            if (d3.event.pageX < map_width / 2) {
+              d3.select("#tooltip-container")
+                .style("top", (d3.event.layerY + 15) + "px")
+                .style("left", (d3.event.layerX + 15) + "px");
+            } else {
+              var tooltip_width = $("#tooltip-container").width();
+              d3.select("#tooltip-container")
+                .style("top", (d3.event.layerY + 15) + "px")
+                .style("left", (d3.event.layerX - tooltip_width - 30) + "px");
+            }
+        })
+        .on("mouseout", function() {
+                $(this).attr("fill-opacity", "1.0");
+                $("#tooltip-container").hide();
+            });
+    country.exit().remove()
+    g.append("path")
+        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+        .attr("class", "boundary")
+        .attr("d", path);
+    svg.attr("height", config.height * 2.2 / 3);
+  });
+  
+ d3.select(self.frameElement).style("height", (height * 2.3 / 3) + "px");
+});
+              
+//}
+function newad(ne){
+    var toUrl = "index.html?" + ne.name;
+    window.location.replace(toUrl);
+}
+//document.getElementById("section3").innerHTML='<object type="text/html" data="/index3.html" width="100%" height="100%"></object>';
+</script>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">World Values Survey</a>
+            </div>
+            <div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#section1">Introduction</a></li>
+                        <li><a href="#section2">Visualization 1</a></li>
+                        <li><a href="#section3">Visualization 2</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Discovery Processes <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#section41">Previous</a></li>
+                                <li><a href="#section42">Now</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="section1" class="container-fluid">
+        <h1>Introduction</h1>
+        <p>My name is Haoqing Shen.This is my exploration for assignment 2 in information visualization 2019 course.</p>
+        <p>I selected 8 questions in WVS website and tried to find the relationship between health and other 7 important things in life, family, friends, work, leisure time, religion, politics and happiness. Here are my visualization and discovery processes.</p>
+    </div>
+    <div id="section2" class="container-fluid">
+        <h1>World Map of Important in Life for countries</h1>
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary" role="button" id= "date1" name="WVS1"  value="1990-1994" onclick="newad(this)">1990-1994</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date2" name="WVS2"  value="1995-1999" onclick="newad(this)">1995-1999</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date3" name="WVS3"  value="2000-2004" onclick="newad(this)">2000-2004</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date4" name="WVS4"  value="2005-2009" onclick="newad(this)">2005-2009</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date5" name="WVS5"  value="2010-2014" onclick="newad(this)">2010-2014</a>
+        </div>
+        <div id="tooltip-container"></div>
+        
+        <div id="canvas-svg"></div>
+    </div>
+    <div id="section3" class="container-fluid">
+        <h1>biPartite of Important in Life for countries</h1>
+        <iframe src="index3.html" width="100%" height="100%" frameborder="0">
+        </iframe>
+    </div>
+    <div id="section41" class="container-fluid">
+        <h1>Discovery Process for WVS Website</h1>
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width:50%;height:50%">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+            
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="img/DP1.png" alt="Los Angeles" style="width:100%;">
+                        </div>
+                
+                <div class="item">
+                    <img src="img/DP2.png" alt="Chicago" style="width:100%;">
+                        </div>
+                
+                <div class="item">
+                    <img src="img/DP3.png" alt="New york" style="width:100%;">
+                        </div>
+                <div class="item">
+                    <img src="img/DP4.png" alt="New 44york" style="width:100%;">
+                        </div>
+            </div>
+            
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <p>My research question is to find the relationship between the health and the important things of life in different countries.</p>
+        <p>I first chose 1990-1994 as a time wave and all countries to see the distribution in V83(State of health) and V18(Feeling of happiness).We could see some countries which got "Very Good" in health also got "Very happy" in happiness such as Nigeria. But the map of most mentioned answer and the graph of stack bar in each category are not so clear based on the most mentioned answer and so many legends and we couldn't compare two questions at the same time.</p>
+    </div>
+    <div id="section42" class="container-fluid">
+        <h1>Discovery Process for My Website</h1>
+        <table>
+            <tr>
+                <td>
+                    <a><img src="img/DP5.png" class="img-thumbnail" alt="Cinque Terre" ></a>
+                </td>
+                <td>
+                    <a><img src="img/DP6.png" class="img-thumbnail" alt="Cinque22"> </a>
+                </td>
+            </tr>
+        </table>
+        <p>I changed the category into numtric values by normalizing them from 1 to 4 and caculated average score. We could compare the scores of other questions by putting mouse on USA and find it got the highest score in "health" for 1995-1999 as well as happiness. We could also change the map by time.</p>
+        <p>As for the biPartite graph in 1995-1999, we could figure out that "family" and "health" are the most important parts in life in these 8 aspects for USA as well as all countries. Besides, the higher the "health" score, the greater the proportion in the population. In countries with lower "health" scores, the proportion of "health" is less than that of "family", and vice versa.</p>
+    </div>
+</body>
+<footer class="page-footer font-small blue">
+    
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <a href="https://www.kth.se/social/course/DH2321/"> Haoqing Shen-KTH-Data Science</a>
+    </div>
+    <!-- Copyright -->
+    
+    </footer>

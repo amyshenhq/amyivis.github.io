@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+    <style>
+        text{
+            font-size:12px;
+        }
+    .mainBars rect{
+        shape-rendering: auto;
+        fill-opacity: 0;
+        stroke-width: 0.5px;
+        stroke: rgb(0, 0, 0);
+        stroke-opacity: 0;
+    }
+    .subBars{
+        shape-rendering:crispEdges;
+    }
+    .edges{
+        stroke:none;
+        fill-opacity:0.5;
+    }
+    .header{
+        text-anchor:middle;
+        font-size:16px;
+    }
+    line{
+        stroke:grey;
+    }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <body>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="http://vizjs.org/viz.v1.1.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary" role="button" id= "date1" name="WVS1"  value="1990-1994" onclick="newad(this)">1990-1994</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date2" name="WVS2"  value="1995-1999" onclick="newad(this)">1995-1999</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date3" name="WVS3"  value="2000-2004" onclick="newad(this)">2000-2004</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date4" name="WVS4"  value="2005-2009" onclick="newad(this)">2005-2009</a>
+            <a href="#" class="btn btn-primary" role="button" id= "date5" name="WVS5"  value="2010-2014" onclick="newad(this)">2010-2014</a>
+        </div>
+        <script>
+            
+            var val="WVS1.csv";
+            var sHref = window.location.href;
+            var args = sHref.split("?");
+            if(args[1]!=null){
+                val=args[1]+".csv";
+            }
+        var color ={Health:"#3366CC", Happiness:"#DC3912",  Family:"#FF9900", Friends:"#109618", Religion:"#990099", Work:"#0099C6",Politics:"#FFC0CB"};
+var svg = d3.select("body").append("svg").attr("width", 960).attr("height", 800);
+if(val=="WVS1.csv"){
+    svg.append("text").attr("x",250).attr("y",70)
+    .attr("class","header").text("Important in Life(1990-1994)");
+}
+        else if(val=="WVS2.csv"){
+            svg.append("text").attr("x",250).attr("y",70)
+            .attr("class","header").text("Important in Life(1995-1999)");
+        }
+        else if(val=="WVS3.csv"){
+            svg.append("text").attr("x",250).attr("y",70)
+            .attr("class","header").text("Important in Life(2000-2004)");
+        }
+        else if(val=="WVS4.csv"){
+            svg.append("text").attr("x",250).attr("y",70)
+            .attr("class","header").text("Important in Life(2005-2009)");
+        }
+        else if(val=="WVS5.csv"){
+            svg.append("text").attr("x",250).attr("y",70)
+            .attr("class","header").text("Important in Life(2010-2014)");
+        }
+
+var g =svg.append("g").attr("transform","translate(150,100)");
+
+d3.csv(val, function(error, data) {
+       var config = {"data0":"Country","data1":"Family","data2":"Friends","data3":"Leisure time","data4":"Politics","data5":"Work","data6":"Religion","data7":"Happiness","data8":"Health"}
+       var KEY = config.data0;
+       var VALUE = config.data8;
+       var VALUE1 = config.data1;
+       var VALUE2 = config.data2;
+       var VALUE3 = config.data3;
+       var VALUE4 = config.data4;
+       var VALUE5 = config.data5;
+       var VALUE6 = config.data6;
+       var VALUE7 = config.data7;
+       var valueHash = [];
+       data.forEach(function(d) {
+                    valueHash.push(["Health",d[KEY],d[VALUE]])
+                    valueHash.push(["Family",d[KEY],d[VALUE1]])
+                    valueHash.push(["Friends",d[KEY],d[VALUE2]])
+                    valueHash.push(["Leisure time",d[KEY],d[VALUE3]])
+                    valueHash.push(["Politics",d[KEY],d[VALUE4]])
+                    valueHash.push(["Work",d[KEY],d[VALUE5]])
+                    valueHash.push(["Religion",d[KEY],d[VALUE6]])
+                    valueHash.push(["Happiness",d[KEY],d[VALUE7]])
+                    });
+
+ var bp =viz.bP()
+    .data(valueHash)
+    .min(12)
+    .pad(1)
+    .height(600)
+    .width(200)
+    .barSize(35)
+    .fill(d=>color[d.primary])
+
+    var g=d3.select("g").call(bp)
+            
+            g.append("text").attr("x",-50).attr("y",-8).style("text-anchor","middle").text("Question");
+            g.append("text").attr("x", 250).attr("y",-8).style("text-anchor","middle").text("Country");
+            
+            g.append("line").attr("x1",-100).attr("x2",0);
+            g.append("line").attr("x1",200).attr("x2",300);
+            
+            g.append("line").attr("y1",610).attr("y2",610).attr("x1",-100).attr("x2",0);
+            g.append("line").attr("y1",610).attr("y2",610).attr("x1",200).attr("x2",300);
+            
+            g.selectAll(".mainBars")
+            .on("mouseover",mouseover)
+            .on("mouseout",mouseout);
+            
+            g.selectAll(".mainBars").append("text").attr("class","label")
+            .attr("x",d=>(d.part=="primary"? -30: 30))
+            .attr("y",d=>+6)
+            .text(d=>d.key)
+            .attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
+            
+            g.selectAll(".mainBars").append("text").attr("class","perc")
+            .attr("x",d=>(d.part=="primary"? -100: 120))
+            .attr("y",d=>+6)
+            .text(function(d){ return d3.format("0.0%")(d.percent)})
+            .attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
+            
+            function mouseover(d){
+                              bp.mouseover(d);
+                              
+                              g.selectAll(".mainBars").select(".perc")
+                              .text(function(d){ return d3.format("0.0%")(d.percent)});
+            }
+            function mouseout(d){
+                              bp.mouseout(d);
+                              
+                              g.selectAll(".mainBars").select(".perc")
+                              .text(function(d){ return d3.format("0.0%")(d.percent)});
+            }
+            d3.select(self.frameElement).style("height", "800px");
+    });
+    function newad(ne){
+        var toUrl = "index3.html?" + ne.name;
+        window.location.replace(toUrl);
+    }
+            </script>
+    </body>
+    </html>
