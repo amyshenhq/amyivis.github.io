@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>志达教育咨询</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+
+  <!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400" rel="stylesheet">
+    <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+	<link href="css/xlstablefilter.css" rel="stylesheet" type="text/css">
+        
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+    <!-- Table style  -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> -->
+    
+    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script> -->
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script> -->
+     <!-- FOR table filter -->
+     <script src="js/jquery-ui.min.js"></script>
+     
+     <script type="text/javascript" src="js/jquery.xlstablefilter.js"></script>
+     <script type="text/javascript" src="js/jquery.table2excel.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div class="colorlib-loader"></div>
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+            <div class="top-menu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div id="colorlib-logo"><a href="index.html">志达</a></div>
+                        </div>
+                        <div class="col-md-10 text-right menu-1">
+                            <ul>
+                                <li class="active"><a href="index.html">主页</a></li>
+                                <li class="has-dropdown">
+                                    <a href="shop.html">职业规划</a>
+                                    <ul class="dropdown">
+                                        <li><a href="work-grid.html">Works grid with text</a></li>
+                                        <li><a href="work-grid-without-text.html">Works grid w/o text</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="services.html">志愿填报</a></li>
+                                <li><a href="blog.html">高招信息</a></li>
+                                <li><a href="about.html">团队介绍</a></li>
+                                <li><a href="contact.html">联系我们</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</nav>
+
+		<section id="home" class="video-hero" style="height: 500px; background-image: url(images/cover_img_1.jpg);  background-size:cover; background-position: center center;background-attachment:fixed;" data-section="home">
+		<div class="overlay"></div>
+			<div class="display-t display-t2 text-center">
+				<div class="display-tc display-tc2">
+					<div class="container">
+						<div class="col-md-12 col-md-offset-0">
+							<div class="animate-box">
+								<h2>模拟志愿</h2>
+								<p class="breadcrumbs"><span><a href="index.html">主页</a></span> <span>模拟志愿</span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<div class="colorlib-services">
+			<div class="container">
+                
+                    <div class="col-md-10 col-lg-push-3 animate-box">
+                        <table class="table table-bordered" id="dt" width="100%" cellspacing="0">
+                            <thead>
+                                
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                        <input type="button" name="ou" id="output" value="一键导出志愿方案" class="btn btn-primary">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>志愿类型</th>
+                                    <th>录取批次</th>
+                                    <th>学校名称</th>
+                                    <th>所在地点</th>
+                                    <th>院校层次</th>
+                                    <th>院校类型</th>
+                                    <th>院校性质</th>
+                                    <th>18年提档线</th>
+                                    <th>18年省名次</th>
+                                    <th>17年提档线</th>
+                                    <th>17年省名次</th>
+                                    <th>16年提档线</th>
+                                    <th>16年省名次</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-2 col-md-pull-10 animate-box">
+                        <h2>请输入查询条件</h2>
+                        <form>
+                            <div class="row form-group">
+                                
+                                    <!-- <label for="fname">First Name</label> -->
+                                    <label for="exampleFormControlSelect1">学生姓名</label>
+                                    <input type="text" name="sname" id="nam" class="form-control" placeholder="姓名">
+                                    <label for="exampleFormControlSelect1">科别</label>
+                                    <select class="form-control" name="cla" id="exampleFormControlSelect1">
+                                        <option>理科</option>
+                                        <option>文科</option>
+                                    </select>
+                                    <label for="exampleFormControlSelect1">2019高考分数</label>
+                                    <input type="text" name="score" id="fname" class="form-control" placeholder="0-750">
+                                   
+                                
+                            </div>
+                            <div class="form-group">
+                                <input type="button" name="se" id="search" value="查询" class="btn btn-primary">
+                                
+                            </div>
+                            <label>说明</label>
+                            <p>本系统依据位次法，根据18年录取结果筛选出冲刺、稳妥、保底三种志愿类型。每年招生方案有变，请以2019年招生指南为准，本结果仅供参考。用户可在表头处根据需求进一步筛选，导出志愿方案。</p>
+                        </form>
+                        
+                     </div>
+                 
+			</div>
+		</div>
+
+		<footer id="colorlib-footer">
+            <div class="container">
+                <div class="row row-pb-md">
+                    <div class="col-md-3 colorlib-widget">
+                        <h4>关于我们</h4>
+                        <p>志达教育咨询是由一线教师与高校学生联合组建的一支精英团队。自主研发的志愿填报系统，可以结合分数筛选学校；教师均具有多年志愿填报经验；在校学生了解大学生活各方面信息，帮助您走好人生的重要一步。</p>
+                        <p>
+                        <ul class="colorlib-social-icons">
+                            <li><a href="#"><i class="icon-twitter"></i></a></li>
+                            <li><a href="#"><i class="icon-facebook"></i></a></li>
+                            <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                            <li><a href="#"><i class="icon-dribbble"></i></a></li>
+                        </ul>
+                        </p>
+                    </div>
+                    <div class="col-md-3 colorlib-widget">
+                        <h4>Information</h4>
+                        <p>
+                        <ul class="colorlib-footer-links">
+                            <li><a href="#"><i class="icon-check"></i> 主页</a></li>
+                            <li><a href="#"><i class="icon-check"></i> 职业生涯规划</a></li>
+                            <li><a href="#"><i class="icon-check"></i> 志愿填报</a></li>
+                            <li><a href="#"><i class="icon-check"></i> 关于我们</a></li>
+                        </ul>
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-3 colorlib-widget">
+                        <h4>Recent Blog</h4>
+                        <div class="f-blog">
+                            <a href="blog.html" class="blog-img" style="background-image: url(images/blog-1.jpg);">
+                            </a>
+                            <div class="desc">
+                                <h2><a href="https://news.koolearn.com/20190608/1178833.html">2019全国一卷高考答案</a></h2>
+                                <p class="admin"><span>09 06 2019</span></p>
+                            </div>
+                        </div>
+                        <div class="f-blog">
+                            <a href="blog.html" class="blog-img" style="background-image: url(images/blog-2.jpg);">
+                            </a>
+                            <div class="desc">
+                                <h2><a href="blog.html">2019河北高考一分一档</a></h2>
+                                <p class="admin"><span>24 06 2019</span></p>
+                            </div>
+                        </div>
+                        <div class="f-blog">
+                            <a href="blog.html" class="blog-img" style="background-image: url(images/blog-3.jpg);">
+                            </a>
+                            <div class="desc">
+                                <h2><a href="http://m.ccutu.com/jianzhang/3/">2019全国高校招生简章</a></h2>
+                                <p class="admin"><span>09 06 2019</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 colorlib-widget">
+                        <h4>联系方式</h4>
+                        <ul class="colorlib-footer-links">
+                            <li>邢台市中兴东大街家乐园襄都店, <br> 对面“记忆大师”培训机构</li>
+                            <li><a href="tel://13011955952"><i class="icon-phone"></i>刘老师：13011955952</a></li>
+                            <li><a href="tel://13121191133"><i class="icon-phone"></i>沈老师：13121191133</a></li>
+                            <li><a href="#"><i class="icon-location4"></i> zhida.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copy">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> 版权所有 | 志达教育咨询</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --><br>
+                            部分资料来源网络</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+	</div>
+    <script type="text/javascript">
+        
+        $('#search').click(function() {   //获取表单的查询条件
+                var s1 = $('#exampleFormControlSelect1').val();
+                //var s2 = $('#exampleFormControlSelect2').val();
+                var score = $('#fname').val();
+                //var up = $('#dname').val();
+                ///var rank = $('#fline').val();
+                if(score.length==0 ){
+                //判断查询条件是否符合标准
+                        alert('输入查询分数!');
+                }
+                else{
+                    getData(s1,score);
+                    getAjaxData(s1,score);
+                           
+                    }
+        });
+        function getData(s1,score){
+            var infoma="<tr><th>年份</th><th>科别</th><th>一批省控线</th><th>二批省控线</th><th>你的分数</th><th>你的省名次</th><th>你的同分人数</th></tr>";
+            $("#dt thead").html(infoma);
+            $.getJSON("data/data-info.php", {s1:s1,score:score},function(json) {
+                      var year = 2019;
+                      var con="";
+                      $.each(json,function(){
+                             con+="<tr><td>"+year+"</td>+<td>"+s1+"</td><td>"+this.l1+"</td><td>"+this.l2+"</td><td>"+score+"</td><td>"+this.rank+"</td><td>"+this.num+"</td></tr>";
+                             });
+                      $("#dt tbody").html(con);
+                      });
+        }
+        function getAjaxData(s1,score) {
+            
+            $.getJSON("data/data-map.php", {s1:s1,score:score},function(json) {
+                //var data=[];
+                var con="";
+                $.each(json,function(){
+                con+="<tr><td><h4>"+this.t+"</h4></td><td>"+this.batch+"</td><td><a href="+this.link+" target='_blank'>"+this.name+"</a></td>+<td>"+this.loca+"</td><td>"+this.level+"</td><td>"+this.type+"</td><td>"+this.cat+"</td><td>"+this.s18+"</td><td>"+this.r18+"</td>+<td>"+this.s17+"</td><td>"+this.r17+"</td>+<td>"+this.s16+"</td><td>"+this.r16+"</td></tr>";
+                });
+                $("#dataTable tbody").html(con);
+             });
+                      
+            $(function() {
+                
+                $("#dataTable").xlsTableFilter();
+                
+            });
+        }
+        $('#output').click(function(){
+                    var na = $('#nam').val();
+                    na+= "_志愿方案.xlsx";
+                    if(na.length==0 ){
+                           //判断查询条件是否符合标准
+                           alert('输入姓名!');
+                    }
+                    else{
+                           $("#dataTable").table2excel({
+                                                       //exclude: ".noExl",
+                                                       name: "志达2019志愿方案",
+                                                       filename: na,
+                                                       exclude_img: true,
+                                                       exclude_links: true,
+                                                       exclude_inputs: true
+                                                       });
+                    }
+                    
+                    });
+
+    </script>
+	<!-- jQuery -->
+	
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Stellar Parallax -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- YTPlayer -->
+	<script src="js/jquery.mb.YTPlayer.min.js"></script>
+	<!-- Owl carousel -->
+	<script src="js/owl.carousel.min.js"></script>
+	<!-- Magnific Popup -->
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/magnific-popup-options.js"></script>
+	<!-- Counters -->
+	<script src="js/jquery.countTo.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+	</body>
+</html>
+
