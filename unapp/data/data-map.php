@@ -1,6 +1,6 @@
 <?php
 
-    $host = "cdb-6b46bmmg.bj.tencentcdb.com:10130";
+    $host = "http://cdb-6b46bmmg.bj.tencentcdb.com:10130";
     $user = "root";
     $pass = "qingmm521";
     // $db = "db_highcharts";
